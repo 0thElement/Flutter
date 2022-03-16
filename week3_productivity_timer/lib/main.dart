@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'widgets/productivity_button.dart';
 import 'timer.dart';
+import 'settings.dart';
 
 double defaultPadding = 3;
 
@@ -56,9 +57,38 @@ class _TimerHomePageState extends State<TimerHomePage> {
   }
 
   @override
+  void initState() {
+    Settings.initialize();
+    super.initState();
+  }
+
+  final List<PopupMenuItem<String>> menuItems = [
+    const PopupMenuItem(value: 'Settings', child: Text('Settings'))
+  ];
+
+  void toSettingsMenu(BuildContext context) {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const SettingsScreen()));
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Productivity Timer')),
+      appBar: AppBar(
+        title: const Text('Productivity Timer'),
+        actions: [
+          PopupMenuButton(
+            itemBuilder: (BuildContext context) {
+              return menuItems.toList();
+            },
+            onSelected: (item) {
+              if (item == 'Settings') {
+                toSettingsMenu(context);
+              }
+            },
+          )
+        ],
+      ),
       body: LayoutBuilder(
         builder: ((context, constraints) {
           final double availableWidth = constraints.maxWidth;
@@ -71,21 +101,24 @@ class _TimerHomePageState extends State<TimerHomePage> {
                   color: const Color(0xff009688),
                   padding: defaultPadding,
                   disabled: timerActive,
-                  callback: () => setTimer(const Duration(minutes: 60)),
+                  callback: () =>
+                      setTimer(Duration(minutes: Settings.workTime)),
                 ),
                 ProductivityButton(
                   text: "Short Break",
                   color: const Color(0xff607D8b),
                   padding: defaultPadding,
                   disabled: timerActive,
-                  callback: () => setTimer(const Duration(minutes: 15)),
+                  callback: () =>
+                      setTimer(Duration(minutes: Settings.shortBreak)),
                 ),
                 ProductivityButton(
                   text: "Long Break",
                   color: const Color(0xff455a64),
                   padding: defaultPadding,
                   disabled: timerActive,
-                  callback: () => setTimer(const Duration(minutes: 30)),
+                  callback: () =>
+                      setTimer(Duration(minutes: Settings.longBreak)),
                 )
               ]),
               const Spacer(),
