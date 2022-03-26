@@ -4,6 +4,7 @@
         android:label="week8_treasure_map"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyD4CJxhQI2MJ18D0018uodWEKNZ_9iYP1s"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
