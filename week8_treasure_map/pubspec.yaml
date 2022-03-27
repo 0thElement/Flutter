@@ -38,6 +38,8 @@ dependencies:
   geolocator: ^8.2.0
   sqflite: ^2.0.2
   path: ^1.8.0
+  camera: ^0.9.4+17
+  path_provider: ^2.0.9
 
 dev_dependencies:
   flutter_test:

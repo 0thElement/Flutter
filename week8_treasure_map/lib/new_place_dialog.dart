@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:week8_treasure_map/camera_screen.dart';
 import 'db_helper.dart';
 import 'place.dart';
 
@@ -38,6 +40,19 @@ class PlaceDialog {
               decoration: const InputDecoration(hintText: 'Longitude'),
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
+            ),
+            (place.image != '') ? Image.file(File(place.image)) : Container(),
+            IconButton(
+              icon: const Icon(Icons.camera_front),
+              onPressed: () async {
+                if (isNewPlace) {
+                  int id = await helper.insertPlace(place);
+                  place.id = id;
+                }
+                MaterialPageRoute route =
+                    MaterialPageRoute(builder: (_) => CameraScreen(place));
+                Navigator.push(context, route);
+              },
             ),
             TextButton(
                 onPressed: () {
