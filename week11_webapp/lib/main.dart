@@ -1,6 +1,7 @@
 import 'dart:html';
 
 import 'package:flutter/material.dart';
+import 'package:week11_webapp/data/books_favorite.dart';
 import 'data/books_query.dart';
 import 'ui.dart';
 
@@ -33,15 +34,20 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   BooksQuery query = BooksQuery();
   List<dynamic> books = [];
+  Set<String> favorites = {};
   TextEditingController txtSearch = TextEditingController();
+
+  void initialize() async {
+    books = await query.getBooks('Flutter') ?? [];
+
+    setState(() {
+      books = books;
+    });
+  }
 
   @override
   void initState() {
-    query.getBooks('Flutter').then((value) {
-      setState(() {
-        books = value ?? [];
-      });
-    });
+    initialize();
     super.initState();
   }
 
@@ -85,9 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           Container(
             padding: const EdgeInsets.all(20),
-            child: isSmall
-                ? BookList(books: books, favorite: false)
-                : BookTable(books: books, favorite: false),
+            child: isSmall ? BookList(books: books) : BookTable(books: books),
           ),
         ]),
       ),
